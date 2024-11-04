@@ -3,6 +3,8 @@ import sys
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from star import Star
+from random import randint
 
 class SpaceRunner:
 
@@ -19,6 +21,9 @@ class SpaceRunner:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.stars = pygame.sprite.Group()
+
+        self._create_stars()
 
     
     def run_game(self):
@@ -31,13 +36,45 @@ class SpaceRunner:
             self._update_screen()
             self.clock.tick(60)
 
+    def _create_stars(self):
+        """Create a grid of background stars."""
+        
+
+        star = Star(self)
+    
+        current_x, current_y = star.rect.size
+
+        while current_y < (self.settings.screen_height - star.rect.height):
+            while current_x < (self.settings.screen_width - star.rect.width):
+                self._create_new_star(current_x, current_y)
+
+                current_x += 4 * star.rect.width
+
+            current_x = star.rect.width
+            current_y += 4 * star.rect.height
+
+
+    def _create_new_star(self, x_position, y_position):
+        """Create a new star and add it to the grid group. Slightly randomize
+              position using randint."""
+        random_number = randint(-10,10)
+        new_star = Star(self)
+        new_star.rect.x = x_position + random_number
+        new_star.rect.y = y_position + random_number
+        self.stars.add(new_star)
+
+
+        
+
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
+        self.stars.draw(self.screen)
         self.ship.blitme()
         
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
 
+        
         pygame.display.flip()
 
     def _check_events(self):
