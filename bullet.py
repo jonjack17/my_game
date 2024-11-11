@@ -1,5 +1,5 @@
 import pygame
-from pygame.sprite import Group, Sprite
+from pygame.sprite import Sprite
 
 # A file to manage bullets. Bullets must travel left to right, and must be 
 # deleted when they leave the screen. A maximum of 4 bullets can be on 

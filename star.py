@@ -14,8 +14,7 @@ class Star(Sprite):
         self.image = pygame.image.load('images/star.bmp')
         self.rect = self.image.get_rect()
 
-        # Start each new star near the top left of the screen
-        self.rect.x, self.rect.y = self.rect.size
+      
 
 
 
