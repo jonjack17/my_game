@@ -6,6 +6,7 @@ from bullet import Bullet
 from star import Star
 from random import randint
 from raindrop import Raindrop
+from alien import Alien
 
 class SpaceRunner:
 
@@ -24,9 +25,11 @@ class SpaceRunner:
         self.bullets = pygame.sprite.Group()
         self.stars = pygame.sprite.Group()
         self.raindrops = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
 
         self._create_stars()
         self._create_rainstorm()
+        self._create_fleet()
 
     
     def run_game(self):
@@ -36,9 +39,47 @@ class SpaceRunner:
             self._check_events()
             self.ship.update()
             self._update_bullets()
+            self._update_aliens()
             self._update_raindrops()
             self._update_screen()
             self.clock.tick(60)
+
+    def _create_fleet(self):
+        """Create a grid shaped fleet of aliens entering from right."""
+        # Keep adding aliens until there are 3 full columns of aliens
+        alien = Alien(self)
+
+        alien_width, alien_height = alien.rect.size
+
+        current_x = self.settings.screen_width - alien_width
+        current_y = alien_height
+
+        while current_x >= (self.settings.screen_width - 6*alien_width):
+            while current_y <= (self.settings.screen_height - 2*alien_height):
+                self._create_alien(current_x, current_y)
+                current_y += 2 * alien_height
+            
+            # Finished a row; reset y value and increment x value
+            current_y = alien_height
+            current_x -= 2 * alien_width
+
+    def _create_alien(self, x_position, y_position):
+        """Create an alien and place it in the row."""
+
+        new_alien = Alien(self)
+        new_alien.x = x_position
+        new_alien.rect.x = x_position
+        new_alien.rect.y = y_position
+        self.aliens.add(new_alien)
+
+
+
+
+
+
+
+
+
 
     def _create_rainstorm(self):
         """Create a grid of background rain."""
@@ -118,7 +159,8 @@ class SpaceRunner:
         for raindrop in self.raindrops.sprites():
             raindrop.draw_raindrop()
 
-        
+        self.aliens.draw(self.screen)
+
         pygame.display.flip()
 
     def _check_events(self):
@@ -173,6 +215,9 @@ class SpaceRunner:
             if bullet.rect.right >= self.settings.screen_width:
                 self.bullets.remove(bullet)
           
+    def _update_aliens(self):
+        """Update position of aliens."""
+        self.aliens.update()
 
     
 
