@@ -12,7 +12,7 @@ class Settings:
         self.ship_speed = 4
 
         # Bullet settings
-        self.bullet_color = (90, 90, 90)
+        self.bullet_color = (255, 0, 0)
         self.bullet_height = 3
         self.bullet_width = 15
         self.bullet_speed = 40
@@ -22,7 +22,7 @@ class Settings:
         self.raindrop_color = (84, 100, 100)
         self.raindrop_height = 20
         self.raindrop_width = 2
-        self.raindrop_speed = 2
+        self.raindrop_speed = 4
         
 
       

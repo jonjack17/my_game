@@ -56,11 +56,12 @@ class SpaceRunner:
 
     def _create_new_raindrop(self, x_position, y_position):
         """Create a single raindrop and add it to the group."""
-            
+        random_number = randint(-3,3)
+
         new_raindrop = Raindrop(self)
-        new_raindrop.rect.x = x_position
-        new_raindrop.y = y_position
-        new_raindrop.rect.y = y_position
+        new_raindrop.rect.x = x_position + random_number
+        new_raindrop.y = y_position + random_number
+        new_raindrop.rect.y = y_position + random_number
         self.raindrops.add(new_raindrop)
 
     def _update_raindrops(self):

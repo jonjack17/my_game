@@ -1,5 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
+from random import randint
 
 # A class to manage raindrops. Raindrops should move top to bottom in a grid
 # format. When one row reaches the bottom of the screen, another row should
@@ -23,7 +24,8 @@ class Raindrop(Sprite):
     
     def update(self):
         """Drop the raindrop across the screen to the bottom"""
-        self.y +=self.settings.raindrop_speed
+        random_number = randint(-3,3)
+        self.y +=self.settings.raindrop_speed + random_number
         self.rect.y = self.y
 
 
