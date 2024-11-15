@@ -10,11 +10,12 @@ class Settings:
 
         # Ship settings
         self.ship_speed = 4
+        self.ship_limit = 2
 
         # Bullet settings
         self.bullet_color = (255, 0, 0)
-        self.bullet_height = 5
-        self.bullet_width = 30
+        self.bullet_height = 10
+        self.bullet_width = 20
         self.bullet_speed = 40
         self.bullets_allowed = 10
 
@@ -25,7 +26,7 @@ class Settings:
         self.raindrop_speed = 4
 
         # Alien settings
-        self.alien_speed = 2
+        self.alien_speed = 4
 
         
 
