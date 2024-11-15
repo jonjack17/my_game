@@ -10,6 +10,7 @@ from star import Star
 from random import randint
 from raindrop import Raindrop
 from alien import Alien
+from target import Target
 
 class SpaceRunner:
 
@@ -32,10 +33,11 @@ class SpaceRunner:
         self.stars = pygame.sprite.Group()
         self.raindrops = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
+        self.target=Target(self)
 
         self._create_stars()
         self._create_rainstorm()
-        self._create_fleet()
+        # self._create_fleet()
 
         #  Start SpaceRunner in an active state.
         self.game_active = True
@@ -52,6 +54,7 @@ class SpaceRunner:
                 self._update_bullets()
                 self._update_aliens()
                 self._update_raindrops()
+                self._update_target()
 
             self._update_screen()
             self.clock.tick(60)
@@ -172,6 +175,8 @@ class SpaceRunner:
             raindrop.draw_raindrop()
 
         self.aliens.draw(self.screen)
+        self.target.draw_target()
+       
 
         pygame.display.flip()
 
@@ -237,11 +242,14 @@ class SpaceRunner:
         self.stats.aliens_hit +=len(collisions)
         # print(f"Aliens hit: {self.stats.aliens_hit}")
         
-        if not self.aliens:
-        # Destroy existing bullets and create new fleet.
-            self.bullets.empty()
-            self._create_fleet()
+        # if not self.aliens:
+        # # Destroy existing bullets and create new fleet.
+        #     self.bullets.empty()
+        #     self._create_fleet()
 
+    def _update_target(self):
+        self.target.check_edges()
+        self.target.update()
           
     def _update_aliens(self):
         """Update position of aliens."""

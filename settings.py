@@ -26,7 +26,14 @@ class Settings:
         self.raindrop_speed = 4
 
         # Alien settings
-        self.alien_speed = 4
+        self.alien_speed = 1
+
+        # Target settings
+        self.target_color = (0, 0, 255)
+        self.target_width = 20
+        self.target_height = 100
+        self.target_speed = 4
+        self.target_direction = 1
 
         
 
