@@ -16,7 +16,7 @@ class Settings:
         self.bullet_color = (255, 0, 0)
         self.bullet_height = 10
         self.bullet_width = 20
-        self.bullet_speed = 40
+        self.bullet_speed = 20
         self.bullets_allowed = 10
 
         # Raindrop settings
@@ -34,6 +34,7 @@ class Settings:
         self.target_height = 100
         self.target_speed = 4
         self.target_direction = 1
+        self.miss_limit = 3
 
         
 

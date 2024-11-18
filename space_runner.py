@@ -4,6 +4,7 @@ from time import sleep
 
 from settings import Settings
 from game_stats import GameStats
+from button import Button
 from ship import Ship
 from bullet import Bullet
 from star import Star
@@ -39,8 +40,11 @@ class SpaceRunner:
         self._create_rainstorm()
         # self._create_fleet()
 
-        #  Start SpaceRunner in an active state.
-        self.game_active = True
+        #  Start SpaceRunner in an inactive state.
+        self.game_active = False
+
+        # Make the play button.
+        self.play_button = Button(self, "Play")
 
     
     def run_game(self):
@@ -51,10 +55,10 @@ class SpaceRunner:
 
             if self.game_active:
                 self.ship.update()
-                self._update_bullets()
                 self._update_aliens()
                 self._update_raindrops()
                 self._update_target()
+                self._update_bullets()
 
             self._update_screen()
             self.clock.tick(60)
@@ -176,6 +180,10 @@ class SpaceRunner:
 
         self.aliens.draw(self.screen)
         self.target.draw_target()
+
+        # Draw the play button if the game is inactive
+        if not self.game_active:
+            self.play_button.draw_button()
        
 
         pygame.display.flip()
@@ -190,6 +198,24 @@ class SpaceRunner:
                 # print(pygame.key.name(event.key))
             elif event.type ==pygame.KEYUP:
                 self._check_keyup_events(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+        
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the player clicks Play."""
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.game_active:
+            #  Reset the game statistics.
+            self.stats.reset_stats()
+            self.game_active = True
+
+            # Get rid of any remaining bullets.
+            self.bullets.empty()
+
+            # Recenter the ship and the target.
+            self.ship.center_ship()
+            self.target.center_target()
 
     def _check_keydown_events(self, event):
         # if event.key == pygame.K_RIGHT:
@@ -227,12 +253,32 @@ class SpaceRunner:
         """Update position of bullets and get rid of old bullets"""
         self.bullets.update()
 
-        # Get rid of bullets that have disappeared
-        for bullet in self.bullets.copy():
-            if bullet.rect.right >= self.settings.screen_width:
-                self.bullets.remove(bullet)
+        
+                
 
         self._check_bullet_alien_collisions()
+        self._check_target_miss()
+
+       
+        
+    
+    def _check_target_miss(self):
+        for bullet in self.bullets.copy():
+            if pygame.sprite.collide_rect(self.target, bullet):
+                print("You got a hit! ")
+                self.bullets.remove(bullet)
+            elif bullet.rect.right >= self.settings.screen_width:
+                print("You missed!")
+                self.bullets.remove(bullet)
+       
+            
+        #         self.stats.misses_left -= 1
+        #         print( self.stats.misses_left)
+        # else:
+        #     self.game_active = False
+
+        
+        
     
     def _check_bullet_alien_collisions(self):
         """Respond to bullet-alien collisions."""
@@ -250,6 +296,8 @@ class SpaceRunner:
     def _update_target(self):
         self.target.check_edges()
         self.target.update()
+        
+        
           
     def _update_aliens(self):
         """Update position of aliens."""

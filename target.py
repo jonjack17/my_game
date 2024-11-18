@@ -1,11 +1,13 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Target:
+class Target(Sprite):
     """A class to manage a moving target."""
 
     # The target will move up and down on the right side of the screen, 
     # changing directions when it hits a top or bottom screen edge.
     def __init__(self, sr_game):
+        super().__init__()
         self.screen = sr_game.screen
         self.screen_rect = sr_game.screen.get_rect()
         self.settings = sr_game.settings
@@ -31,6 +33,9 @@ class Target:
     def _change_target_direction(self):
         self.settings.target_direction *= -1
         
+
+    def center_target(self):
+        self.rect.midright = self.screen_rect.midright
 
     def draw_target(self):
         """Draw the target to the screen."""
