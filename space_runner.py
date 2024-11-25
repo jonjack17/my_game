@@ -206,6 +206,8 @@ class SpaceRunner:
         """Start a new game when the player clicks Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.game_active:
+            # Reset the game settings.
+            self.settings.initialize_dynamic_settings()
             #  Reset the game statistics.
             self.stats.reset_stats()
             self.game_active = True
@@ -260,15 +262,16 @@ class SpaceRunner:
                 
 
         self._check_bullet_alien_collisions()
-        self._check_target_miss()
+        self._check_target_interaction()
 
        
         
     
-    def _check_target_miss(self):
+    def _check_target_interaction(self):
         for bullet in self.bullets.copy():
-            if pygame.sprite.collide_rect(self.target, bullet):
-                print("You got a hit! ")
+            if pygame.sprite.collide_rect(self.target, bullet): 
+                self.stats.target_hits +=1
+                print(f"Total hits:{self.stats.target_hits}")
                 self.bullets.remove(bullet)
             elif bullet.rect.right >= self.settings.screen_width:
                 print("You missed!")
@@ -278,6 +281,9 @@ class SpaceRunner:
             self.game_active = False
             print("You lost!")
             pygame.mouse.set_visible(True)
+        if self.stats.target_hits > 2:
+            self.stats.target_hits = 0
+            self.settings.increase_target_speed()
 
         
         

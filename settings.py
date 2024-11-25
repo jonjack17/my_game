@@ -2,7 +2,7 @@ class Settings:
 
     """A class to store all settings for Space Runner."""
     def __init__(self):
-        """Initialize the game's settings."""
+        """Initialize the game's static settings."""
         # Game settings
         self.screen_width = 1200
         self.screen_height = 800
@@ -16,7 +16,7 @@ class Settings:
         self.bullet_color = (255, 0, 0)
         self.bullet_height = 10
         self.bullet_width = 20
-        self.bullet_speed = 20
+        self.bullet_speed = 50
         self.bullets_allowed = 10
 
         # Raindrop settings
@@ -32,9 +32,23 @@ class Settings:
         self.target_color = (0, 0, 255)
         self.target_width = 20
         self.target_height = 100
-        self.target_speed = 4
+        self.miss_limit = 5
+
+        # How quickly the game speeds up
+        self.speedup_scale = 2
+
+        self.initialize_dynamic_settings()
+
+    def initialize_dynamic_settings(self):
+        """Initialize settings that change throughout the game."""
+        self.target_speed = 3
         self.target_direction = 1
-        self.miss_limit = 3
+
+    def increase_target_speed(self):
+        """Increase speed settings."""
+        self.target_speed *= self.speedup_scale
+
+        
 
         
 

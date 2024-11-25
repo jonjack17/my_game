@@ -12,4 +12,5 @@ class GameStats:
         """Initialize the statistics that can change during the game."""
         self.ships_left = self.settings.ship_limit
         self.aliens_hit = 0
+        self.target_hits = 0
         self.misses_left = self.settings.miss_limit
