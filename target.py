@@ -36,6 +36,7 @@ class Target(Sprite):
 
     def center_target(self):
         self.rect.midright = self.screen_rect.midright
+        self.y = float(self.rect.y)
 
     def draw_target(self):
         """Draw the target to the screen."""

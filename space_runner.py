@@ -217,6 +217,9 @@ class SpaceRunner:
             self.ship.center_ship()
             self.target.center_target()
 
+            # Hide the mouse cursor
+            pygame.mouse.set_visible(False)
+
     def _check_keydown_events(self, event):
         # if event.key == pygame.K_RIGHT:
         #     self.ship.moving_right = True
@@ -270,12 +273,11 @@ class SpaceRunner:
             elif bullet.rect.right >= self.settings.screen_width:
                 print("You missed!")
                 self.bullets.remove(bullet)
-       
-            
-        #         self.stats.misses_left -= 1
-        #         print( self.stats.misses_left)
-        # else:
-        #     self.game_active = False
+                self.stats.misses_left -= 1
+        if self.stats.misses_left < 1:
+            self.game_active = False
+            print("You lost!")
+            pygame.mouse.set_visible(True)
 
         
         

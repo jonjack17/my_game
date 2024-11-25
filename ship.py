@@ -36,6 +36,7 @@ class Ship:
 
     def center_ship(self):
         self.rect.midleft = self.screen_rect.midleft
+        self.y = float(self.rect.y)
 
 
     def blitme(self):
