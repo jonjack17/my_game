@@ -23,7 +23,7 @@ class Settings:
         self.raindrop_color = (84, 100, 100)
         self.raindrop_height = 20
         self.raindrop_width = 2
-        self.raindrop_speed = 4
+        self.raindrop_speed = 2
 
         # Alien settings
         self.alien_speed = 1

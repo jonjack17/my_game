@@ -34,11 +34,11 @@ class SpaceRunner:
         self.stars = pygame.sprite.Group()
         self.raindrops = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
-        self.target=Target(self)
+        # self.target=Target(self)
 
         self._create_stars()
         self._create_rainstorm()
-        # self._create_fleet()
+        self._create_fleet()
 
         #  Start SpaceRunner in an inactive state.
         self.game_active = False
@@ -57,7 +57,7 @@ class SpaceRunner:
                 self.ship.update()
                 self._update_aliens()
                 self._update_raindrops()
-                self._update_target()
+                # self._update_target()
                 self._update_bullets()
 
             self._update_screen()
@@ -179,7 +179,7 @@ class SpaceRunner:
             raindrop.draw_raindrop()
 
         self.aliens.draw(self.screen)
-        self.target.draw_target()
+        # self.target.draw_target()
 
         # Draw the play button if the game is inactive
         if not self.game_active:
@@ -217,7 +217,7 @@ class SpaceRunner:
 
             # Recenter the ship and the target.
             self.ship.center_ship()
-            self.target.center_target()
+            # self.target.center_target()
 
             # Hide the mouse cursor
             pygame.mouse.set_visible(False)
@@ -262,28 +262,31 @@ class SpaceRunner:
                 
 
         self._check_bullet_alien_collisions()
-        self._check_target_interaction()
+        # self._check_target_interaction()
 
-       
+        for bullet in self.bullets.copy():
+            if bullet.rect.right >= self.settings.screen_width:
+                self.bullets.remove(bullet)
+
         
     
-    def _check_target_interaction(self):
-        for bullet in self.bullets.copy():
-            if pygame.sprite.collide_rect(self.target, bullet): 
-                self.stats.target_hits +=1
-                print(f"Total hits:{self.stats.target_hits}")
-                self.bullets.remove(bullet)
-            elif bullet.rect.right >= self.settings.screen_width:
-                print("You missed!")
-                self.bullets.remove(bullet)
-                self.stats.misses_left -= 1
-        if self.stats.misses_left < 1:
-            self.game_active = False
-            print("You lost!")
-            pygame.mouse.set_visible(True)
-        if self.stats.target_hits > 2:
-            self.stats.target_hits = 0
-            self.settings.increase_target_speed()
+    # def _check_target_interaction(self):
+    #     for bullet in self.bullets.copy():
+    #         if pygame.sprite.collide_rect(self.target, bullet): 
+    #             self.stats.target_hits +=1
+    #             print(f"Total hits:{self.stats.target_hits}")
+    #             self.bullets.remove(bullet)
+    #         elif bullet.rect.right >= self.settings.screen_width:
+    #             print("You missed!")
+    #             self.bullets.remove(bullet)
+    #             self.stats.misses_left -= 1
+    #     if self.stats.misses_left < 1:
+    #         self.game_active = False
+    #         print("You lost!")
+    #         pygame.mouse.set_visible(True)
+    #     if self.stats.target_hits > 2:
+    #         self.stats.target_hits = 0
+    #         self.settings.increase_target_speed()
 
         
         
@@ -296,14 +299,14 @@ class SpaceRunner:
         self.stats.aliens_hit +=len(collisions)
         # print(f"Aliens hit: {self.stats.aliens_hit}")
         
-        # if not self.aliens:
-        # # Destroy existing bullets and create new fleet.
-        #     self.bullets.empty()
-        #     self._create_fleet()
+        if not self.aliens:
+        # Destroy existing bullets and create new fleet.
+            self.bullets.empty()
+            self._create_fleet()
 
-    def _update_target(self):
-        self.target.check_edges()
-        self.target.update()
+    # def _update_target(self):
+    #     self.target.check_edges()
+    #     self.target.update()
         
         
           
